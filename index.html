@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mira Network | Among Us iOS Server</title>
     <style>
+        :root {
+            --primary: #f97316;
+            --primary-hover: #ea580c;
+            --bg-dark: #090d16;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-green: #22c55e;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -13,134 +23,167 @@
         }
 
         body {
-            background-color: #0b0e14;
-            color: #ffffff;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             padding: 20px;
-            text-align: center;
         }
 
         .container {
-            max-width: 480px;
-            width: 100%;
-            background: #161b22;
-            border: 1px solid #30363d;
+            background-color: var(--card-bg);
+            border: 1px solid #334155;
             border-radius: 20px;
-            padding: 30px 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            padding: 32px 24px;
+            max-width: 440px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--accent-green);
+            padding: 6px 14px;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-green);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--accent-green);
         }
 
         h1 {
-            font-size: 2.2rem;
-            color: #ff4757;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
             margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: -0.5px;
         }
 
         p.subtitle {
-            color: #8b949e;
+            color: var(--text-muted);
             font-size: 0.95rem;
-            margin-bottom: 25px;
-        }
-
-        .status-card {
-            background: #21262d;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 25px;
-            font-size: 0.9rem;
-            color: #c9d1d9;
-            text-align: left;
-        }
-
-        .status-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-        }
-
-        .status-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .badge {
-            background: #238636;
-            color: #ffffff;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: bold;
+            margin-bottom: 28px;
+            line-height: 1.5;
         }
 
         .btn-launch {
             display: block;
-            width: 100%;
-            background: #ff4757;
+            background-color: var(--primary);
             color: #ffffff;
-            font-size: 1.2rem;
-            font-weight: bold;
-            text-decoration: none;
-            padding: 16px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            padding: 16px 20px;
             border-radius: 12px;
-            transition: transform 0.1s ease, background 0.2s ease;
-            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
-            margin-bottom: 15px;
+            text-decoration: none;
+            box-shadow: 0 10px 15px -3px rgba(249, 115, 22, 0.3);
+            transition: all 0.2s ease;
+            margin-bottom: 24px;
         }
 
         .btn-launch:active {
-            transform: scale(0.98);
-            background: #ff2e43;
+            transform: scale(0.97);
+            background-color: var(--primary-hover);
+        }
+
+        .ip-box {
+            background-color: #0f172a;
+            border: 1px dashed #475569;
+            border-radius: 10px;
+            padding: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+        }
+
+        .ip-text {
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: #cbd5e1;
+        }
+
+        .btn-copy {
+            background-color: #334155;
+            color: #ffffff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
         }
 
         .instructions {
+            text-align: left;
+            border-top: 1px solid #334155;
+            padding-top: 20px;
+        }
+
+        .instructions h3 {
+            font-size: 0.9rem;
+            color: #cbd5e1;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .instructions ol {
+            padding-left: 18px;
+            color: var(--text-muted);
             font-size: 0.85rem;
-            color: #8b949e;
-            line-height: 1.4;
-            margin-top: 20px;
+            line-height: 1.6;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>Mira Network</h1>
-        <p class="subtitle">Custom Modded Among Us Server for iOS</p>
-
-        <div class="status-card">
-            <div class="status-item">
-                <span>Status:</span>
-                <span class="badge">ONLINE 24/7</span>
-            </div>
-            <div class="status-item">
-                <span>Modes:</span>
-                <span>Zombies, Jester & Commands</span>
-            </div>
-            <div class="status-item">
-                <span>Server IP:</span>
-                <span>136.243.83.105</span>
-            </div>
-            <div class="status-item">
-                <span>Port:</span>
-                <span>47619</span>
-            </div>
+        <div class="status-badge">
+            <span class="pulse-dot"></span> Server Online
         </div>
 
-        <!-- Among Us iOS Deep Link Redirect -->
-        <a href="amongus://redirect?ip=136.243.83.105&port=47619" class="btn-launch">
-            🚀 Launch Among Us
-        </a>
+        <h1>Mira Network</h1>
+        <p class="subtitle">Connect your iOS device to the 24/7 custom Mira server in one tap.</p>
+
+        <!-- Deep link format -->
+        <a href="amongus://136.243.83.105:47619" class="btn-launch">🎮 Open in Among Us</a>
+
+        <div class="ip-box">
+            <span class="ip-text" id="serverIp">136.243.83.105:47619</span>
+            <button class="btn-copy" onclick="copyIp()">Copy IP</button>
+        </div>
 
         <div class="instructions">
-            <p><strong>How to Connect:</strong></p>
-            <p>1. Tap the button above on your iPad or iPhone.</p>
-            <p>2. Tap <strong>Open</strong> when iOS asks to open Among Us.</p>
-            <p>3. Go to <strong>Online</strong> $\rightarrow$ create/join a custom lobby!</p>
+            <h3>iOS Connection Guide</h3>
+            <ol>
+                <li>Completely close <b>Among Us</b> from your app switcher.</li>
+                <li>Tap the orange button above and choose <b>Open</b>.</li>
+                <li>Check your region dropdown menu in-game to start playing!</li>
+            </ol>
         </div>
     </div>
 
+    <script>
+        function copyIp() {
+            navigator.clipboard.writeText("136.243.83.105:47619");
+            const btn = document.querySelector('.btn-copy');
+            btn.innerText = "Copied!";
+            setTimeout(() => btn.innerText = "Copy IP", 2000);
+        }
+    </script>
 </body>
 </html>
