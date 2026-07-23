@@ -16,6 +16,7 @@
             --accent-green: #22c55e;
             --accent-blue: #3b82f6;
             --accent-purple: #a855f7;
+            --accent-red: #ef4444;
             --border-color: #334155;
         }
 
@@ -41,7 +42,7 @@
             border: 1px solid var(--border-color);
             border-radius: 20px;
             padding: 28px 20px;
-            max-width: 480px;
+            max-width: 520px;
             width: 100%;
             text-align: center;
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
@@ -84,46 +85,6 @@
             margin-bottom: 20px;
         }
 
-        /* Platform Selection Bar */
-        .platform-bar {
-            display: flex;
-            gap: 8px;
-            justify-content: center;
-            margin-bottom: 24px;
-        }
-
-        .platform-tag {
-            font-size: 0.75rem;
-            font-weight: 700;
-            padding: 6px 12px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .platform-active {
-            background-color: rgba(249, 115, 22, 0.15);
-            color: var(--primary);
-            border: 1px solid rgba(249, 115, 22, 0.4);
-        }
-
-        .platform-disabled {
-            background-color: rgba(255, 255, 255, 0.05);
-            color: #64748b;
-            border: 1px solid #334155;
-            cursor: not-allowed;
-        }
-
-        .badge-soon {
-            font-size: 0.65rem;
-            background-color: #334155;
-            color: #94a3b8;
-            padding: 2px 5px;
-            border-radius: 4px;
-            text-transform: uppercase;
-        }
-
         /* Navigation Tabs */
         .tab-buttons {
             display: flex;
@@ -132,16 +93,17 @@
             border-radius: 12px;
             margin-bottom: 20px;
             border: 1px solid var(--border-color);
+            gap: 4px;
         }
 
         .tab-btn {
             flex: 1;
-            padding: 10px;
+            padding: 10px 6px;
             border: none;
             background: none;
             color: var(--text-muted);
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -162,7 +124,7 @@
             display: block;
         }
 
-        /* Server Connection View */
+        /* Launch Button */
         .btn-launch {
             display: block;
             background-color: var(--primary);
@@ -174,7 +136,7 @@
             text-decoration: none;
             box-shadow: 0 10px 15px -3px rgba(249, 115, 22, 0.3);
             transition: all 0.2s ease;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .btn-launch:active {
@@ -182,10 +144,108 @@
             background-color: var(--primary-hover);
         }
 
+        /* Common Card Styles */
+        .item-card {
+            background-color: var(--card-inner);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 12px;
+            text-align: left;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .item-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .command-tag {
+            font-family: monospace;
+            background: rgba(249, 115, 22, 0.15);
+            color: var(--primary);
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .item-desc {
+            font-size: 0.83rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* Custom Roles Input Builder */
+        .role-builder {
+            background-color: var(--card-inner);
+            border: 1px dashed var(--primary);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 18px;
+            text-align: left;
+        }
+
+        .role-builder h3 {
+            font-size: 0.95rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .input-group {
+            margin-bottom: 10px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .input-field {
+            width: 100%;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: #ffffff;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            outline: none;
+        }
+
+        .input-field:focus {
+            border-color: var(--primary);
+        }
+
+        .btn-action {
+            width: 100%;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            margin-top: 6px;
+        }
+
+        /* Instructions Section */
         .instructions {
             text-align: left;
             border-top: 1px solid var(--border-color);
             padding-top: 18px;
+            margin-top: 16px;
         }
 
         .instructions h3 {
@@ -202,73 +262,6 @@
             font-size: 0.82rem;
             line-height: 1.5;
         }
-
-        /* Code Tracker View */
-        .code-card {
-            background-color: var(--card-inner);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 14px;
-            margin-bottom: 12px;
-            text-align: left;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .code-info {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .code-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .code-title {
-            font-size: 1.2rem;
-            font-weight: 800;
-            letter-spacing: 1.5px;
-            color: #ffffff;
-            font-family: monospace;
-        }
-
-        .players-count {
-            font-size: 0.75rem;
-            color: var(--accent-green);
-            font-weight: 600;
-        }
-
-        .mode-tags {
-            display: flex;
-            gap: 6px;
-        }
-
-        .tag {
-            font-size: 0.7rem;
-            font-weight: 700;
-            padding: 2px 8px;
-            border-radius: 4px;
-            text-transform: uppercase;
-        }
-
-        .tag-classic { background: rgba(59, 130, 246, 0.2); color: var(--accent-blue); }
-        .tag-hide { background: rgba(168, 85, 247, 0.2); color: var(--accent-purple); }
-        .tag-modded { background: rgba(249, 115, 22, 0.2); color: var(--primary); }
-
-        .btn-copy-code {
-            background-color: var(--primary);
-            color: #ffffff;
-            border: none;
-            padding: 8px 14px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            cursor: pointer;
-        }
     </style>
 </head>
 <body>
@@ -276,101 +269,116 @@
     <div class="container">
         <!-- Live Status Badge -->
         <div class="status-badge">
-            <span class="pulse-dot"></span> Server Online
+            <span class="pulse-dot"></span> Mira Network Online
         </div>
 
         <h1>Mira Network</h1>
-        <p class="subtitle">24/7 Among Us Custom Server & Lobbies</p>
-
-        <!-- Platform Badges -->
-        <div class="platform-bar">
-            <div class="platform-tag platform-active">
-                <span>📱 iOS</span>
-            </div>
-            <div class="platform-tag platform-disabled">
-                <span>🤖 Android</span>
-                <span class="badge-soon">Soon</span>
-            </div>
-            <div class="platform-tag platform-disabled">
-                <span>💻 PC</span>
-                <span class="badge-soon">Soon</span>
-            </div>
-        </div>
+        <p class="subtitle">Custom Servers, Gamemodes & Roles</p>
 
         <!-- Navigation Tabs -->
         <div class="tab-buttons">
             <button class="tab-btn active" onclick="switchTab('connectTab', this)">Server Joiner</button>
-            <button class="tab-btn" onclick="switchTab('codesTab', this)">Active Lobbies</button>
+            <button class="tab-btn" onclick="switchTab('modesTab', this)">/gamemode</button>
+            <button class="tab-btn" onclick="switchTab('rolesTab', this)">/roles</button>
         </div>
 
         <!-- TAB 1: Connect Page -->
         <div id="connectTab" class="tab-content active">
-            <!-- Direct numeric IP payload link for iOS -->
-            <a href="amongus://server?ip=136.243.83.105&port=47619&name=Mira%20Network" class="btn-launch">🎮 Connect Server (iOS)</a>
+            <!-- iOS Deep Link Joiner -->
+            <a href="amongus://?ip=136.243.83.105&port=47619&name=Mira%20Network" class="btn-launch" onclick="launchGame(event, '136.243.83.105', '47619')">
+                🎮 Connect to Mira Network
+            </a>
 
             <div class="instructions">
-                <h3>Quick Connect Instructions</h3>
+                <h3>Connecting on iOS</h3>
                 <ol>
-                    <li>Swipe away and <b>force close Among Us</b> completely.</li>
-                    <li>Tap the orange <b>Connect Server</b> button above.</li>
-                    <li>Tap <b>Open</b> when prompted to launch the game.</li>
+                    <li>Force close Among Us completely.</li>
+                    <li>Tap the orange <b>Connect</b> button above.</li>
+                    <li>Tap <b>Open</b> when Safari prompts you.</li>
                 </ol>
             </div>
         </div>
 
-        <!-- TAB 2: Lobby Codes & Gamemodes Tracker -->
-        <div id="codesTab" class="tab-content">
+        <!-- TAB 2: Gamemodes (/gamemode) -->
+        <div id="modesTab" class="tab-content">
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 14px;">
+                Type these commands in lobby chat to set active gamemodes:
+            </p>
 
-            <!-- Active Lobby 1 -->
-            <div class="code-card">
-                <div class="code-info">
-                    <div class="code-header">
-                        <span class="code-title">QWXZLK</span>
-                        <span class="players-count">🟢 12/15</span>
-                    </div>
-                    <div class="mode-tags">
-                        <span class="tag tag-classic">Classic</span>
-                        <span class="tag tag-modded">2 Impostors</span>
-                    </div>
+            <div class="item-card">
+                <div class="item-header">
+                    <span class="item-title">Standard Classic</span>
+                    <span class="command-tag">/gamemode classic</span>
                 </div>
-                <button class="btn-copy-code" onclick="copyText('QWXZLK', this)">Copy Code</button>
+                <p class="item-desc">Standard Among Us gameplay with custom server settings and roles enabled.</p>
             </div>
 
-            <!-- Active Lobby 2 -->
-            <div class="code-card">
-                <div class="code-info">
-                    <div class="code-header">
-                        <span class="code-title">FVMJYR</span>
-                        <span class="players-count">🟢 8/10</span>
-                    </div>
-                    <div class="mode-tags">
-                        <span class="tag tag-hide">Hide & Seek</span>
-                    </div>
+            <div class="item-card">
+                <div class="item-header">
+                    <span class="item-title">Hide and Seek</span>
+                    <span class="command-tag">/gamemode hideandseek</span>
                 </div>
-                <button class="btn-copy-code" onclick="copyText('FVMJYR', this)">Copy Code</button>
+                <p class="item-desc">Impostor is revealed instantly. Crewmates must complete tasks before being hunted down.</p>
             </div>
 
-            <!-- Active Lobby 3 -->
-            <div class="code-card">
-                <div class="code-info">
-                    <div class="code-header">
-                        <span class="code-title">PTNBXQ</span>
-                        <span class="players-count">🟢 5/15</span>
-                    </div>
-                    <div class="mode-tags">
-                        <span class="tag tag-modded">Town of Host</span>
-                    </div>
+            <div class="item-card">
+                <div class="item-header">
+                    <span class="item-title">Shift Lock / Speedrun</span>
+                    <span class="command-tag">/gamemode shiftlock</span>
                 </div>
-                <button class="btn-copy-code" onclick="copyText('PTNBXQ', this)">Copy Code</button>
+                <p class="item-desc">Fast-paced mode with accelerated cooldowns, modified vision, and instant kills.</p>
+            </div>
+        </div>
+
+        <!-- TAB 3: Custom Roles (/roles) -->
+        <div id="rolesTab" class="tab-content">
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 14px;">
+                Type <code style="color:var(--primary)">/roles</code> in-game to view or configure roles:
+            </p>
+
+            <!-- Roles List -->
+            <div class="item-card">
+                <div class="item-header">
+                    <span class="item-title" style="color: var(--accent-red);">Sheriff</span>
+                    <span class="command-tag">/role sheriff</span>
+                </div>
+                <p class="item-desc">Crewmate with a kill button. Killing an Impostor saves the crew, but killing a Crewmate eliminates the Sheriff!</p>
             </div>
 
-            <div class="instructions" style="margin-top: 10px;">
-                <h3>How to Join Lobbies</h3>
-                <p style="color: var(--text-muted); font-size: 0.8rem; line-height: 1.4;">
-                    Connect to Mira Server first, then copy a code above and paste it into <b>Online &gt; Enter Code</b> in-game!
-                </p>
+            <div class="item-card">
+                <div class="item-header">
+                    <span class="item-title" style="color: var(--accent-purple);">Jester</span>
+                    <span class="command-tag">/role jester</span>
+                </div>
+                <p class="item-desc">Neutral role. Has no tasks and wins the game immediately if voted out during a meeting.</p>
             </div>
 
+            <div class="item-card">
+                <div class="item-header">
+                    <span class="item-title" style="color: var(--accent-blue);">Medic</span>
+                    <span class="command-tag">/role medic</span>
+                </div>
+                <p class="item-desc">Crewmate that can shield a player from being killed or inspect dead bodies for clues.</p>
+            </div>
+
+            <!-- Custom Role Command Creator -->
+            <div class="role-builder">
+                <h3>🛠️ Custom Role Generator</h3>
+                <div class="input-group">
+                    <label>Role Name</label>
+                    <input type="text" id="roleName" class="input-field" placeholder="e.g. Executioner">
+                </div>
+                <div class="input-group">
+                    <label>Role Team</label>
+                    <select id="roleTeam" class="input-field">
+                        <option value="Crewmate">Crewmate</option>
+                        <option value="Impostor">Impostor</option>
+                        <option value="Neutral">Neutral</option>
+                    </select>
+                </div>
+                <button class="btn-action" onclick="generateRoleCommand()">Generate /role Command</button>
+                <p id="generatedCommand" style="font-family: monospace; color: var(--accent-green); font-size: 0.85rem; margin-top: 10px; word-break: break-all;"></p>
+            </div>
         </div>
 
     </div>
@@ -384,13 +392,30 @@
             element.classList.add('active');
         }
 
-        function copyText(text, buttonElement) {
-            navigator.clipboard.writeText(text);
-            const originalText = buttonElement.innerText;
-            buttonElement.innerText = "Copied!";
+        function launchGame(event, ip, port) {
+            const deepLink = `amongus://?ip=${ip}&port=${port}&name=Mira%20Network`;
+            const fallbackLink = `amongus://${ip}:${port}`;
+
+            window.location.href = deepLink;
+
             setTimeout(() => {
-                buttonElement.innerText = originalText;
-            }, 1800);
+                window.location.href = fallbackLink;
+            }, 500);
+        }
+
+        function generateRoleCommand() {
+            const name = document.getElementById('roleName').value.trim().toLowerCase().replace(/\s+/g, '');
+            const team = document.getElementById('roleTeam').value.toLowerCase();
+            const output = document.getElementById('generatedCommand');
+
+            if (!name) {
+                output.innerText = "Please enter a role name!";
+                output.style.color = "var(--accent-red)";
+                return;
+            }
+
+            output.style.color = "var(--accent-green)";
+            output.innerText = `/role set ${name} ${team}`;
         }
     </script>
 </body>
