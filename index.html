@@ -3,16 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mira Network | Among Us iOS Server</title>
+    <title>Mira Network | Among Us Hub</title>
     <style>
         :root {
             --primary: #f97316;
             --primary-hover: #ea580c;
             --bg-dark: #090d16;
             --card-bg: #1e293b;
+            --card-inner: #0f172a;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --accent-green: #22c55e;
+            --accent-blue: #3b82f6;
+            --accent-purple: #a855f7;
+            --border-color: #334155;
         }
 
         * {
@@ -34,15 +38,16 @@
 
         .container {
             background-color: var(--card-bg);
-            border: 1px solid #334155;
+            border: 1px solid var(--border-color);
             border-radius: 20px;
-            padding: 32px 24px;
-            max-width: 440px;
+            padding: 28px 20px;
+            max-width: 480px;
             width: 100%;
             text-align: center;
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
         }
 
+        /* Server Status Header */
         .status-badge {
             display: inline-flex;
             align-items: center;
@@ -53,7 +58,7 @@
             border-radius: 9999px;
             font-size: 0.85rem;
             font-weight: 600;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             border: 1px solid rgba(34, 197, 94, 0.2);
         }
 
@@ -69,29 +74,107 @@
             font-size: 2rem;
             font-weight: 800;
             color: var(--primary);
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             letter-spacing: -0.5px;
         }
 
         p.subtitle {
             color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 28px;
-            line-height: 1.5;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
         }
 
+        /* Platform Selection Bar */
+        .platform-bar {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        .platform-tag {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .platform-active {
+            background-color: rgba(249, 115, 22, 0.15);
+            color: var(--primary);
+            border: 1px solid rgba(249, 115, 22, 0.4);
+        }
+
+        .platform-disabled {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #64748b;
+            border: 1px solid #334155;
+            cursor: not-allowed;
+        }
+
+        .badge-soon {
+            font-size: 0.65rem;
+            background-color: #334155;
+            color: #94a3b8;
+            padding: 2px 5px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        /* Navigation Tabs */
+        .tab-buttons {
+            display: flex;
+            background-color: var(--card-inner);
+            padding: 4px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background: none;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.85rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn.active {
+            background-color: var(--card-bg);
+            color: var(--text-main);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* Tab Content Panels */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Server Connection View */
         .btn-launch {
             display: block;
             background-color: var(--primary);
             color: #ffffff;
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             font-weight: 700;
             padding: 16px 20px;
             border-radius: 12px;
             text-decoration: none;
             box-shadow: 0 10px 15px -3px rgba(249, 115, 22, 0.3);
             transition: all 0.2s ease;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .btn-launch:active {
@@ -100,19 +183,19 @@
         }
 
         .ip-box {
-            background-color: #0f172a;
-            border: 1px dashed #475569;
+            background-color: var(--card-inner);
+            border: 1px dashed var(--border-color);
             border-radius: 10px;
             padding: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 28px;
+            margin-bottom: 20px;
         }
 
         .ip-text {
             font-family: monospace;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             color: #cbd5e1;
         }
 
@@ -129,14 +212,14 @@
 
         .instructions {
             text-align: left;
-            border-top: 1px solid #334155;
-            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 16px;
         }
 
         .instructions h3 {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #cbd5e1;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
@@ -144,45 +227,182 @@
         .instructions ol {
             padding-left: 18px;
             color: var(--text-muted);
-            font-size: 0.85rem;
-            line-height: 1.6;
+            font-size: 0.82rem;
+            line-height: 1.5;
+        }
+
+        /* Code Tracker View */
+        .code-card {
+            background-color: var(--card-inner);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 12px;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .code-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .code-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #ffffff;
+            font-family: monospace;
+        }
+
+        .mode-tags {
+            display: flex;
+            gap: 6px;
+        }
+
+        .tag {
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .tag-classic { background: rgba(59, 130, 246, 0.2); color: var(--accent-blue); }
+        .tag-hide { background: rgba(168, 85, 247, 0.2); color: var(--accent-purple); }
+        .tag-modded { background: rgba(249, 115, 22, 0.2); color: var(--primary); }
+
+        .btn-copy-code {
+            background-color: var(--primary);
+            color: #ffffff;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
+        <!-- Live Status Badge -->
         <div class="status-badge">
             <span class="pulse-dot"></span> Server Online
         </div>
 
         <h1>Mira Network</h1>
-        <p class="subtitle">Connect your iOS device to the 24/7 custom Mira server in one tap.</p>
+        <p class="subtitle">24/7 Among Us Custom Server & Lobbies</p>
 
-        <!-- Deep link format -->
-        <a href="amongus://136.243.83.105:47619" class="btn-launch">🎮 Open in Among Us</a>
-
-        <div class="ip-box">
-            <span class="ip-text" id="serverIp">136.243.83.105:47619</span>
-            <button class="btn-copy" onclick="copyIp()">Copy IP</button>
+        <!-- Platform Badges -->
+        <div class="platform-bar">
+            <div class="platform-tag platform-active">
+                <span>📱 iOS</span>
+            </div>
+            <div class="platform-tag platform-disabled">
+                <span>🤖 Android</span>
+                <span class="badge-soon">Soon</span>
+            </div>
+            <div class="platform-tag platform-disabled">
+                <span>💻 PC</span>
+                <span class="badge-soon">Soon</span>
+            </div>
         </div>
 
-        <div class="instructions">
-            <h3>iOS Connection Guide</h3>
-            <ol>
-                <li>Completely close <b>Among Us</b> from your app switcher.</li>
-                <li>Tap the orange button above and choose <b>Open</b>.</li>
-                <li>Check your region dropdown menu in-game to start playing!</li>
-            </ol>
+        <!-- Navigation Tabs -->
+        <div class="tab-buttons">
+            <button class="tab-btn active" onclick="switchTab('connectTab', this)">Server Joiner</button>
+            <button class="tab-btn" onclick="switchTab('codesTab', this)">Lobby Codes</button>
         </div>
+
+        <!-- TAB 1: Connect Page -->
+        <div id="connectTab" class="tab-content active">
+            <!-- iOS Deep Link -->
+            <a href="amongus://136.243.83.105:47619" class="btn-launch">🎮 Join Server (iOS)</a>
+
+            <div class="ip-box">
+                <span class="ip-text">136.243.83.105:47619</span>
+                <button class="btn-copy" onclick="copyText('136.243.83.105:47619', this)">Copy IP</button>
+            </div>
+
+            <div class="instructions">
+                <h3>Quick Connect Instructions</h3>
+                <ol>
+                    <li>Close <b>Among Us</b> completely on your iPhone/iPad.</li>
+                    <li>Tap the orange <b>Join Server</b> button above.</li>
+                    <li>Tap <b>Open</b> when prompted to launch the game.</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- TAB 2: Lobby Codes & Gamemodes Tracker -->
+        <div id="codesTab" class="tab-content">
+
+            <!-- Lobby Card 1 -->
+            <div class="code-card">
+                <div class="code-info">
+                    <div class="code-title">MIRAM1</div>
+                    <div class="mode-tags">
+                        <span class="tag tag-classic">Classic</span>
+                        <span class="tag tag-modded">Mira Network</span>
+                    </div>
+                </div>
+                <button class="btn-copy-code" onclick="copyText('MIRAM1', this)">Copy Code</button>
+            </div>
+
+            <!-- Lobby Card 2 -->
+            <div class="code-card">
+                <div class="code-info">
+                    <div class="code-title">HIDE02</div>
+                    <div class="mode-tags">
+                        <span class="tag tag-hide">Hide & Seek</span>
+                    </div>
+                </div>
+                <button class="btn-copy-code" onclick="copyText('HIDE02', this)">Copy Code</button>
+            </div>
+
+            <!-- Lobby Card 3 -->
+            <div class="code-card">
+                <div class="code-info">
+                    <div class="code-title">MODD03</div>
+                    <div class="mode-tags">
+                        <span class="tag tag-modded">Custom Roles</span>
+                    </div>
+                </div>
+                <button class="btn-copy-code" onclick="copyText('MODD03', this)">Copy Code</button>
+            </div>
+
+            <div class="instructions" style="margin-top: 10px;">
+                <h3>How to use codes</h3>
+                <p style="color: var(--text-muted); font-size: 0.8rem; line-height: 1.4;">
+                    Copy a code above, join the Mira server, open <b>Online &gt; Enter Code</b>, and paste it in!
+                </p>
+            </div>
+
+        </div>
+
     </div>
 
     <script>
-        function copyIp() {
-            navigator.clipboard.writeText("136.243.83.105:47619");
-            const btn = document.querySelector('.btn-copy');
-            btn.innerText = "Copied!";
-            setTimeout(() => btn.innerText = "Copy IP", 2000);
+        function switchTab(tabId, element) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            element.classList.add('active');
+        }
+
+        function copyText(text, buttonElement) {
+            navigator.clipboard.writeText(text);
+            const originalText = buttonElement.innerText;
+            buttonElement.innerText = "Copied!";
+            setTimeout(() => {
+                buttonElement.innerText = originalText;
+            }, 1800);
         }
     </script>
 </body>
