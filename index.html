@@ -17,6 +17,7 @@
             --accent-blue: #3b82f6;
             --accent-purple: #a855f7;
             --accent-red: #ef4444;
+            --accent-yellow: #eab308;
             --border-color: #334155;
         }
 
@@ -42,7 +43,7 @@
             border: 1px solid var(--border-color);
             border-radius: 20px;
             padding: 28px 20px;
-            max-width: 520px;
+            max-width: 540px;
             width: 100%;
             text-align: center;
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
@@ -144,13 +145,29 @@
             background-color: var(--primary-hover);
         }
 
+        /* Items Container (Scrollable) */
+        .scroll-list {
+            max-height: 420px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .scroll-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .scroll-list::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
         /* Common Card Styles */
         .item-card {
             background-color: var(--card-inner);
             border: 1px solid var(--border-color);
             border-radius: 12px;
-            padding: 14px;
-            margin-bottom: 12px;
+            padding: 12px 14px;
+            margin-bottom: 10px;
             text-align: left;
         }
 
@@ -158,11 +175,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
         .item-title {
-            font-size: 1.05rem;
+            font-size: 0.98rem;
             font-weight: 700;
             color: #ffffff;
         }
@@ -173,71 +190,35 @@
             color: var(--primary);
             padding: 3px 8px;
             border-radius: 6px;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             font-weight: 700;
         }
 
         .item-desc {
-            font-size: 0.83rem;
+            font-size: 0.82rem;
             color: var(--text-muted);
-            line-height: 1.4;
+            line-height: 1.35;
         }
 
-        /* Custom Roles Input Builder */
-        .role-builder {
+        /* Coming Soon Banner */
+        .coming-soon-box {
             background-color: var(--card-inner);
             border: 1px dashed var(--primary);
             border-radius: 12px;
             padding: 16px;
-            margin-top: 18px;
-            text-align: left;
+            margin-top: 14px;
+            text-align: center;
         }
 
-        .role-builder h3 {
+        .coming-soon-box h3 {
             font-size: 0.95rem;
             color: var(--primary);
-            margin-bottom: 10px;
-        }
-
-        .input-group {
-            margin-bottom: 10px;
-        }
-
-        .input-group label {
-            display: block;
-            font-size: 0.75rem;
-            color: var(--text-muted);
             margin-bottom: 4px;
-            text-transform: uppercase;
-            font-weight: 700;
         }
 
-        .input-field {
-            width: 100%;
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            color: #ffffff;
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            outline: none;
-        }
-
-        .input-field:focus {
-            border-color: var(--primary);
-        }
-
-        .btn-action {
-            width: 100%;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 0.85rem;
-            cursor: pointer;
-            margin-top: 6px;
+        .coming-soon-box p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
         }
 
         /* Instructions Section */
@@ -273,111 +254,228 @@
         </div>
 
         <h1>Mira Network</h1>
-        <p class="subtitle">Custom Servers, Gamemodes & Roles</p>
+        <p class="subtitle">Custom Gamemodes, Commands & Roles</p>
 
         <!-- Navigation Tabs -->
         <div class="tab-buttons">
             <button class="tab-btn active" onclick="switchTab('connectTab', this)">Server Joiner</button>
-            <button class="tab-btn" onclick="switchTab('modesTab', this)">/gamemode</button>
-            <button class="tab-btn" onclick="switchTab('rolesTab', this)">/roles</button>
+            <button class="tab-btn" onclick="switchTab('modesTab', this)">/gamemode (10)</button>
+            <button class="tab-btn" onclick="switchTab('rolesTab', this)">/roles (12)</button>
         </div>
 
         <!-- TAB 1: Connect Page -->
         <div id="connectTab" class="tab-content active">
-            <!-- iOS Deep Link Joiner -->
             <a href="amongus://?ip=136.243.83.105&port=47619&name=Mira%20Network" class="btn-launch" onclick="launchGame(event, '136.243.83.105', '47619')">
                 🎮 Connect to Mira Network
             </a>
 
             <div class="instructions">
-                <h3>Connecting on iOS</h3>
+                <h3>Quick Instructions</h3>
                 <ol>
                     <li>Force close Among Us completely.</li>
                     <li>Tap the orange <b>Connect</b> button above.</li>
-                    <li>Tap <b>Open</b> when Safari prompts you.</li>
+                    <li>Tap <b>Open</b> when prompted.</li>
                 </ol>
             </div>
         </div>
 
         <!-- TAB 2: Gamemodes (/gamemode) -->
         <div id="modesTab" class="tab-content">
-            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 14px;">
-                Type these commands in lobby chat to set active gamemodes:
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;">
+                Type these commands in lobby chat to change gamemodes:
             </p>
 
-            <div class="item-card">
-                <div class="item-header">
-                    <span class="item-title">Standard Classic</span>
-                    <span class="command-tag">/gamemode classic</span>
+            <div class="scroll-list">
+                <div class="item-card">
+                    <div class="item-header">
+                        <span class="item-title">Standard Classic</span>
+                        <span class="command-tag">/gamemode classic</span>
+                    </div>
+                    <p class="item-desc">Standard Among Us rules with custom roles and server commands enabled.</p>
                 </div>
-                <p class="item-desc">Standard Among Us gameplay with custom server settings and roles enabled.</p>
-            </div>
 
-            <div class="item-card">
-                <div class="item-header">
-                    <span class="item-title">Hide and Seek</span>
-                    <span class="command-tag">/gamemode hideandseek</span>
+                <div class="item-card">
+                    <div class="item-header">
+                        <span class="item-title">Zombies / Infection</span>
+                        <span class="command-tag">/gamemode zombies</span>
+                    </div>
+                    <p class="item-desc">Impostor infects crewmates on touch. Survived crewmates must complete tasks to win.</p>
                 </div>
-                <p class="item-desc">Impostor is revealed instantly. Crewmates must complete tasks before being hunted down.</p>
-            </div>
 
-            <div class="item-card">
-                <div class="item-header">
-                    <span class="item-title">Shift Lock / Speedrun</span>
-                    <span class="command-tag">/gamemode shiftlock</span>
+                <div class="item-card">
+                    <div class="item-header">
+                        <span class="item-title">Jester Royale</span>
+                        <span class="command-tag">/gamemode jester</span>
+                    </div>
+                    <p class="item-desc">Every player tries to act as suspicious as possible. First person voted out wins!</p>
                 </div>
-                <p class="item-desc">Fast-paced mode with accelerated cooldowns, modified vision, and instant kills.</p>
+
+                <div class="item-card">
+                    <div class="item-header">
+                        <span class="item-title">Hide and Seek</span>
+                        <span class="command-tag">/gamemode hideandseek</span>
+                    </div>
+                    <p class="item-desc">Impostor is revealed at start. No meetings or voting—pure survival.</p>
+                </div>
+
+                <div class="item-card">
+                    <div class="item-header">
+                        <span class="item-title">Murder Mystery</span>
+                        <span class="command-tag">/gamemode murder</span>
+                    </div>
+                    <p class="item-desc">1 Killer, 1 Detective with a gun, and innocent Crewmates holding tasks.</p>
+                </div>
+
+                <div class="item-card">
+                    <div class="item-header">
+                        <span class="item-title">Prop Hunt</span>
+                        <span class="command-tag">/gamemode prophunt</span>
+                    </div>
+                    <p class="item-desc">Crewmates disguise as map items while Impostors search the map to find them.</p>
+                </div>
+
+                <div class="item-card">
+                    <div class="item-header">
+                        <span class="item-title">Shift Lock Speedrun</span>
+                        <span class="command-tag">/gamemode shiftlock</span>
+                    </div>
+                    <p class="item-desc">Extreme player movement speeds with zero kill cooldowns and instant task fixes.</p>
+                </div>
+
+                <div class="item-card">
+                    <div class="item-header">
+                        <span class="item-title">Death Run</span>
+                        <span class="command-tag">/gamemode deathrun</span>
+                    </div>
+                    <p class="item-desc">Impostor activates map hazards while Crewmates race to finish the obstacle course.</p>
+                </div>
+
+                <div class="item-card">
+                    <div class="item-header">
+                        <span class="item-title">High Speed Tag</span>
+                        <span class="command-tag">/gamemode tag</span>
+                    </div>
+                    <p class="item-desc">Pass the tag bomb before the timer expires. Last standing player wins.</p>
+                </div>
+
+                <div class="item-card">
+                    <div class="item-header">
+                        <span class="item-title">Town of Host</span>
+                        <span class="command-tag">/gamemode townofhost</span>
+                    </div>
+                    <p class="item-desc">Full modded ruleset with up to 15 unique active sub-roles running simultaneously.</p>
+                </div>
             </div>
         </div>
 
         <!-- TAB 3: Custom Roles (/roles) -->
         <div id="rolesTab" class="tab-content">
-            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 14px;">
-                Type <code style="color:var(--primary)">/roles</code> in-game to view or configure roles:
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;">
+                Type <code style="color:var(--primary)">/roles</code> in-game to view active role configurations:
             </p>
 
-            <!-- Roles List -->
-            <div class="item-card">
-                <div class="item-header">
-                    <span class="item-title" style="color: var(--accent-red);">Sheriff</span>
-                    <span class="command-tag">/role sheriff</span>
+            <div class="scroll-list">
+                <div class="item-card">
+                    <div class="item-header">
+                        <span class="item-title" style="color: var(--accent-red);">Sheriff</span>
+                        <span class="command-tag">/role sheriff</span>
+                    </div>
+                    <p class="item-desc">Crewmate with a weapon. Eliminating an Impostor saves the crew; targeting a Crewmate eliminates yourself.</p>
                 </div>
-                <p class="item-desc">Crewmate with a kill button. Killing an Impostor saves the crew, but killing a Crewmate eliminates the Sheriff!</p>
+
+                <div class="item-card">
+                    <div class="item-header">
+                        <span class="item-title" style="color: var(--accent-purple);">Jester</span>
+                        <span class="command-tag">/role jester</span>
+                    </div>
+                    <p class="item-desc">Neutral role. Has no tasks and wins immediately if voted out during a meeting.</p>
+                </div>
+
+                <div class="item-card">
+                    <div class="item-header">
+                        <span class="item-title" style="color: var(--accent-blue);">Medic</span>
+                        <span class="command-tag">/role medic</span>
+                    </div>
+                    <p class="item-desc">Can place a protective shield on one player or inspect dead bodies for death reports.</p>
+                </div>
+
+                <div class="item-card">
+                    <div class="item-header">
+                        <span class="item-title" style="color: var(--accent-yellow);">Engineer</span>
+                        <span class="command-tag">/role engineer</span>
+                    </div>
+                    <p class="item-desc">Crewmate that can access vents and remotely fix sabotages from anywhere on the map.</p>
+                </div>
+
+                <div class="item-card">
+                    <div class="item-header">
+                        <span class="item-title" style="color: var(--accent-green);">Mayor</span>
+                        <span class="command-tag">/role mayor</span>
+                    </div>
+                    <p class="item-desc">Crewmate leader whose vote counts as two during emergency meetings.</p>
+                </div>
+
+                <div class="item-card">
+                    <div class="item-header">
+                        <span class="item-title" style="color: var(--accent-purple);">Swapper</span>
+                        <span class="command-tag">/role swapper</span>
+                    </div>
+                    <p class="item-desc">Can exchange the total votes between two players during emergency meetings.</p>
+                </div>
+
+                <div class="item-card">
+                    <div class="item-header">
+                        <span class="item-title" style="color: var(--accent-red);">Godfather</span>
+                        <span class="command-tag">/role godfather</span>
+                    </div>
+                    <p class="item-desc">Impostor leader who appears as a innocent Crewmate to Sheriff and Detective scans.</p>
+                </div>
+
+                <div class="item-card">
+                    <div class="item-header">
+                        <span class="item-title" style="color: var(--accent-red);">Morphling</span>
+                        <span class="command-tag">/role morphling</span>
+                    </div>
+                    <p class="item-desc">Impostor who can sample another player's appearance and transform into them temporarily.</p>
+                </div>
+
+                <div class="item-card">
+                    <div class="item-header">
+                        <span class="item-title" style="color: var(--accent-yellow);">Arsonist</span>
+                        <span class="command-tag">/role arsonist</span>
+                    </div>
+                    <p class="item-desc">Neutral role. Douses players in gasoline and ignites them all at once for an instant solo win.</p>
+                </div>
+
+                <div class="item-card">
+                    <div class="item-header">
+                        <span class="item-title" style="color: var(--accent-purple);">Executioner</span>
+                        <span class="command-tag">/role executioner</span>
+                    </div>
+                    <p class="item-desc">Neutral role assigned a specific target. Wins if their target gets voted out.</p>
+                </div>
+
+                <div class="item-card">
+                    <div class="item-header">
+                        <span class="item-title" style="color: var(--accent-blue);">Phantom</span>
+                        <span class="command-tag">/role phantom</span>
+                    </div>
+                    <p class="item-desc">Becomes completely invisible for a short duration after finishing a task.</p>
+                </div>
+
+                <div class="item-card">
+                    <div class="item-header">
+                        <span class="item-title" style="color: var(--accent-yellow);">Vulture</span>
+                        <span class="command-tag">/role vulture</span>
+                    </div>
+                    <p class="item-desc">Neutral role that must locate and eat a set number of bodies to achieve victory.</p>
+                </div>
             </div>
 
-            <div class="item-card">
-                <div class="item-header">
-                    <span class="item-title" style="color: var(--accent-purple);">Jester</span>
-                    <span class="command-tag">/role jester</span>
-                </div>
-                <p class="item-desc">Neutral role. Has no tasks and wins the game immediately if voted out during a meeting.</p>
-            </div>
-
-            <div class="item-card">
-                <div class="item-header">
-                    <span class="item-title" style="color: var(--accent-blue);">Medic</span>
-                    <span class="command-tag">/role medic</span>
-                </div>
-                <p class="item-desc">Crewmate that can shield a player from being killed or inspect dead bodies for clues.</p>
-            </div>
-
-            <!-- Custom Role Command Creator -->
-            <div class="role-builder">
-                <h3>🛠️ Custom Role Generator</h3>
-                <div class="input-group">
-                    <label>Role Name</label>
-                    <input type="text" id="roleName" class="input-field" placeholder="e.g. Executioner">
-                </div>
-                <div class="input-group">
-                    <label>Role Team</label>
-                    <select id="roleTeam" class="input-field">
-                        <option value="Crewmate">Crewmate</option>
-                        <option value="Impostor">Impostor</option>
-                        <option value="Neutral">Neutral</option>
-                    </select>
-                </div>
-                <button class="btn-action" onclick="generateRoleCommand()">Generate /role Command</button>
-                <p id="generatedCommand" style="font-family: monospace; color: var(--accent-green); font-size: 0.85rem; margin-top: 10px; word-break: break-all;"></p>
+            <!-- Custom Role Suggestions Coming Soon -->
+            <div class="coming-soon-box">
+                <h3>💡 Custom Role Suggestions</h3>
+                <p>Coming Soon! You will be able to submit custom role ideas directly to the server hosts.</p>
             </div>
         </div>
 
@@ -401,21 +499,6 @@
             setTimeout(() => {
                 window.location.href = fallbackLink;
             }, 500);
-        }
-
-        function generateRoleCommand() {
-            const name = document.getElementById('roleName').value.trim().toLowerCase().replace(/\s+/g, '');
-            const team = document.getElementById('roleTeam').value.toLowerCase();
-            const output = document.getElementById('generatedCommand');
-
-            if (!name) {
-                output.innerText = "Please enter a role name!";
-                output.style.color = "var(--accent-red)";
-                return;
-            }
-
-            output.style.color = "var(--accent-green)";
-            output.innerText = `/role set ${name} ${team}`;
         }
     </script>
 </body>
