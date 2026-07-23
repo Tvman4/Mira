@@ -146,24 +146,14 @@
             background-color: var(--primary-hover);
         }
 
-        /* Dynamic Status Feedback Box */
+        /* Dynamic Status Feedback Box - Default to Failed */
         .connection-status {
-            display: none;
+            display: block;
             padding: 12px;
             border-radius: 10px;
             font-size: 0.88rem;
             font-weight: 700;
             margin-bottom: 20px;
-            transition: all 0.3s ease;
-        }
-
-        .status-working {
-            background: rgba(34, 197, 94, 0.15);
-            color: var(--accent-green);
-            border: 1px solid rgba(34, 197, 94, 0.4);
-        }
-
-        .status-failed {
             background: rgba(239, 68, 68, 0.15);
             color: var(--accent-red);
             border: 1px solid rgba(239, 68, 68, 0.4);
@@ -293,8 +283,10 @@
                 🎮 Connect to Mira Network
             </a>
 
-            <!-- Dynamic Connection Result Box -->
-            <div id="statusBox" class="connection-status"></div>
+            <!-- Persistent Status Box showing default failure since it doesn't inject into regions -->
+            <div id="statusBox" class="connection-status">
+                ❌ Mira Failed (Did not appear in regions)
+            </div>
 
             <div class="instructions">
                 <h3>Quick Instructions</h3>
@@ -521,40 +513,19 @@
             const statusBox = document.getElementById('statusBox');
             statusBox.style.display = 'block';
             statusBox.className = 'connection-status';
-            statusBox.innerText = 'Connecting to Mira Network...';
+            statusBox.style.background = 'rgba(239, 68, 68, 0.15)';
+            statusBox.style.color = 'var(--accent-red)';
+            statusBox.style.border = '1px solid rgba(239, 68, 68, 0.4)';
+            statusBox.innerText = '❌ Mira Failed (Did not appear in regions)';
 
             const deepLink = `amongus://?ip=${ip}&port=${port}&name=Mira%20Network`;
             const fallbackLink = `amongus://${ip}:${port}`;
 
-            let appOpened = false;
-
-            // Track if page loses focus (meaning the game app successfully launched)
-            const handleBlur = () => {
-                appOpened = true;
-            };
-            window.addEventListener('blur', handleBlur);
-
-            // Attempt primary deep link
             window.location.href = deepLink;
 
-            // Secondary attempt fallback
             setTimeout(() => {
-                if (!appOpened) {
-                    window.location.href = fallbackLink;
-                }
-            }, 400);
-
-            // Evaluate result after launch attempt completes
-            setTimeout(() => {
-                window.removeEventListener('blur', handleBlur);
-                if (appOpened) {
-                    statusBox.className = 'connection-status status-working';
-                    statusBox.innerText = '✅ Mira Working!';
-                } else {
-                    statusBox.className = 'connection-status status-failed';
-                    statusBox.innerText = '❌ Mira Failed (Did not appear in regions)';
-                }
-            }, 2500);
+                window.location.href = fallbackLink;
+            }, 500);
         }
     </script>
 </body>
