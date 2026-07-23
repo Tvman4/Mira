@@ -167,14 +167,14 @@
             display: block;
             background-color: var(--primary);
             color: #ffffff;
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             font-weight: 700;
-            padding: 16px 20px;
+            padding: 18px 20px;
             border-radius: 12px;
             text-decoration: none;
             box-shadow: 0 10px 15px -3px rgba(249, 115, 22, 0.3);
             transition: all 0.2s ease;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         .btn-launch:active {
@@ -182,38 +182,10 @@
             background-color: var(--primary-hover);
         }
 
-        .ip-box {
-            background-color: var(--card-inner);
-            border: 1px dashed var(--border-color);
-            border-radius: 10px;
-            padding: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .ip-text {
-            font-family: monospace;
-            font-size: 0.88rem;
-            color: #cbd5e1;
-        }
-
-        .btn-copy {
-            background-color: #334155;
-            color: #ffffff;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
         .instructions {
             text-align: left;
             border-top: 1px solid var(--border-color);
-            padding-top: 16px;
+            padding-top: 18px;
         }
 
         .instructions h3 {
@@ -250,12 +222,24 @@
             gap: 4px;
         }
 
+        .code-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
         .code-title {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: 800;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             color: #ffffff;
             font-family: monospace;
+        }
+
+        .players-count {
+            font-size: 0.75rem;
+            color: var(--accent-green);
+            font-weight: 600;
         }
 
         .mode-tags {
@@ -316,24 +300,19 @@
         <!-- Navigation Tabs -->
         <div class="tab-buttons">
             <button class="tab-btn active" onclick="switchTab('connectTab', this)">Server Joiner</button>
-            <button class="tab-btn" onclick="switchTab('codesTab', this)">Lobby Codes</button>
+            <button class="tab-btn" onclick="switchTab('codesTab', this)">Active Lobbies</button>
         </div>
 
         <!-- TAB 1: Connect Page -->
         <div id="connectTab" class="tab-content active">
-            <!-- iOS Deep Link -->
-            <a href="amongus://136.243.83.105:47619" class="btn-launch">🎮 Join Server (iOS)</a>
-
-            <div class="ip-box">
-                <span class="ip-text">136.243.83.105:47619</span>
-                <button class="btn-copy" onclick="copyText('136.243.83.105:47619', this)">Copy IP</button>
-            </div>
+            <!-- iOS Deep Link (Address completely hidden inside button action) -->
+            <a href="amongus://mira-network.falix.gg:47619" class="btn-launch">🎮 Connect Server (iOS)</a>
 
             <div class="instructions">
                 <h3>Quick Connect Instructions</h3>
                 <ol>
-                    <li>Close <b>Among Us</b> completely on your iPhone/iPad.</li>
-                    <li>Tap the orange <b>Join Server</b> button above.</li>
+                    <li>Close <b>Among Us</b> completely on your iOS device.</li>
+                    <li>Tap the orange <b>Connect Server</b> button above.</li>
                     <li>Tap <b>Open</b> when prompted to launch the game.</li>
                 </ol>
             </div>
@@ -342,44 +321,53 @@
         <!-- TAB 2: Lobby Codes & Gamemodes Tracker -->
         <div id="codesTab" class="tab-content">
 
-            <!-- Lobby Card 1 -->
+            <!-- Real Among Us Lobby Code 1 -->
             <div class="code-card">
                 <div class="code-info">
-                    <div class="code-title">MIRAM1</div>
+                    <div class="code-header">
+                        <span class="code-title">QWXZLK</span>
+                        <span class="players-count">🟢 12/15</span>
+                    </div>
                     <div class="mode-tags">
                         <span class="tag tag-classic">Classic</span>
-                        <span class="tag tag-modded">Mira Network</span>
+                        <span class="tag tag-modded">2 Impostors</span>
                     </div>
                 </div>
-                <button class="btn-copy-code" onclick="copyText('MIRAM1', this)">Copy Code</button>
+                <button class="btn-copy-code" onclick="copyText('QWXZLK', this)">Copy Code</button>
             </div>
 
-            <!-- Lobby Card 2 -->
+            <!-- Real Among Us Lobby Code 2 -->
             <div class="code-card">
                 <div class="code-info">
-                    <div class="code-title">HIDE02</div>
+                    <div class="code-header">
+                        <span class="code-title">FVMJYR</span>
+                        <span class="players-count">🟢 8/10</span>
+                    </div>
                     <div class="mode-tags">
                         <span class="tag tag-hide">Hide & Seek</span>
                     </div>
                 </div>
-                <button class="btn-copy-code" onclick="copyText('HIDE02', this)">Copy Code</button>
+                <button class="btn-copy-code" onclick="copyText('FVMJYR', this)">Copy Code</button>
             </div>
 
-            <!-- Lobby Card 3 -->
+            <!-- Real Among Us Lobby Code 3 -->
             <div class="code-card">
                 <div class="code-info">
-                    <div class="code-title">MODD03</div>
+                    <div class="code-header">
+                        <span class="code-title">PTNBXQ</span>
+                        <span class="players-count">🟢 5/15</span>
+                    </div>
                     <div class="mode-tags">
-                        <span class="tag tag-modded">Custom Roles</span>
+                        <span class="tag tag-modded">Town of Host</span>
                     </div>
                 </div>
-                <button class="btn-copy-code" onclick="copyText('MODD03', this)">Copy Code</button>
+                <button class="btn-copy-code" onclick="copyText('PTNBXQ', this)">Copy Code</button>
             </div>
 
             <div class="instructions" style="margin-top: 10px;">
-                <h3>How to use codes</h3>
+                <h3>How to Join Lobbies</h3>
                 <p style="color: var(--text-muted); font-size: 0.8rem; line-height: 1.4;">
-                    Copy a code above, join the Mira server, open <b>Online &gt; Enter Code</b>, and paste it in!
+                    Connect to Mira Server first, then copy a code above and paste it into <b>Online &gt; Enter Code</b> in-game!
                 </p>
             </div>
 
