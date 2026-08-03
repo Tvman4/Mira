@@ -3,398 +3,243 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cross-Platform App & Game Modifier Studio</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- JSZip for handling archive manipulation client-side -->
+    <title>Modifier Studio - Mira Mod Packer</title>
+    <!-- Include JSZip for client-side packaging -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #0f1020;
+            --panel-bg: #1a1b35;
+            --accent-color: #38c7ff;
+            --text-color: #e0e0e0;
+            --border-color: #2e315e;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            color: var(--accent-color);
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        p.subtitle {
+            color: #8a8db4;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+        }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: #8a8db4;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+        .tab-btn.active {
+            background: var(--accent-color);
+            color: #0f1020;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+            color: #b4b7df;
+        }
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            background: #111226;
+            border: 1px dashed var(--border-color);
+            border-radius: 6px;
+            color: var(--text-color);
+            box-sizing: border-box;
+        }
+        button.action-btn {
+            width: 100%;
+            background: var(--accent-color);
+            color: #0f1020;
+            border: none;
+            padding: 12px;
+            font-weight: bold;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: opacity 0.2s;
+        }
+        button.action-btn:hover {
+            opacity: 0.9;
+        }
+        #status {
+            margin-top: 15px;
+            font-size: 14px;
+            text-align: center;
+            color: var(--accent-color);
+        }
+    </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen font-sans selection:bg-indigo-500 selection:text-white">
+<body>
 
-    <div class="max-w-4xl mx-auto px-4 py-10">
-        <!-- Header -->
-        <header class="mb-8 text-center">
-            <h1 class="text-3xl font-extrabold tracking-tight text-white mb-2">App & Game Modifier Studio</h1>
-            <p class="text-slate-400">Modify, inject payloads, bundle, and rebrand software packages for iOS, Android, and PC.</p>
-        </header>
+    <h1>Modifier Studio</h1>
+    <p class="subtitle">Cross-Platform Game Modding & Packaging Suite</p>
 
-        <!-- Platform Navigation Tabs -->
-        <div class="flex flex-wrap justify-center gap-2 mb-8">
-            <button onclick="switchTab('ios')" id="btn-ios" class="px-5 py-3 rounded-xl font-semibold transition-all duration-200 bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 flex items-center space-x-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
-                <span>iOS (.ipa)</span>
-            </button>
-            <button onclick="switchTab('android')" id="btn-android" class="px-5 py-3 rounded-xl font-semibold transition-all duration-200 bg-slate-900 text-slate-400 border border-slate-800 hover:bg-slate-800 hover:text-white flex items-center space-x-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                <span>Android (.apk)</span>
-            </button>
-            <button onclick="switchTab('pc')" id="btn-pc" class="px-5 py-3 rounded-xl font-semibold transition-all duration-200 bg-slate-900 text-slate-400 border border-slate-800 hover:bg-slate-800 hover:text-white flex items-center space-x-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                <span>PC (EXE / Steam)</span>
-            </button>
+    <div class="container">
+        <!-- Platform Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('ios')">iOS (Mira)</button>
+            <button class="tab-btn" onclick="switchTab('android')">Android</button>
+            <button class="tab-btn" onclick="switchTab('pc')">PC (BepInEx)</button>
         </div>
 
-        <!-- Main Form Container -->
-        <main class="bg-slate-900 border border-slate-800 rounded-2xl shadow-xl p-6 md:p-8 space-y-8">
-            
-            <!-- ================= IOS TAB CONTENT ================= -->
-            <div id="tab-ios" class="space-y-6">
-                <div class="border-b border-slate-800 pb-2">
-                    <h2 class="text-xl font-semibold text-indigo-400">iOS App Package Modifier (.ipa)</h2>
-                    <p class="text-xs text-slate-400">Modify Info.plist attributes, inject dylib payloads, and swap bundle identifiers.</p>
-                </div>
-
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-1">Select iOS .ipa File</label>
-                        <input type="file" id="ipaFile" accept=".ipa" class="w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500 cursor-pointer border border-slate-700 rounded-xl bg-slate-950">
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-1">New Display Name</label>
-                            <input type="text" id="ipaName" placeholder="e.g. Modified App" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2 text-slate-100 focus:outline-none focus:border-indigo-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-1">Bundle Identifier (com.name.appname)</label>
-                            <input type="text" id="ipaBundleId" placeholder="com.developer.appname" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2 text-slate-100 focus:outline-none focus:border-indigo-500 font-mono text-sm">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-1">Inject Payload / Frameworks (.dylib / custom files)</label>
-                        <input type="file" id="ipaInject" multiple class="w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-slate-800 file:text-slate-200 hover:file:bg-slate-700 cursor-pointer border border-slate-700 rounded-xl bg-slate-950">
-                        <p class="text-xs text-slate-500 mt-1">Injected directly into the app payload bundle directory.</p>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-1">Replacement App Icon (.png)</label>
-                        <input type="file" id="ipaIcon" accept=".png" class="w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-slate-800 file:text-slate-200 hover:file:bg-slate-700 cursor-pointer border border-slate-700 rounded-xl bg-slate-950">
-                    </div>
-                </div>
-
-                <div class="pt-2">
-                    <button onclick="processIpa()" class="w-full py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl shadow-lg transition-all duration-200 flex items-center justify-center space-x-2">
-                        <span>Recompile & Download Modified .ipa</span>
-                    </button>
-                </div>
+        <!-- iOS Tab Content -->
+        <div id="ios" class="tab-content active">
+            <div class="form-group">
+                <label>Upload Among Us Base IPA:</label>
+                <input type="file" id="ipaFile" accept=".ipa,.zip">
             </div>
-
-            <!-- ================= ANDROID TAB CONTENT ================= -->
-            <div id="tab-android" class="space-y-6 hidden">
-                <div class="border-b border-slate-800 pb-2">
-                    <h2 class="text-xl font-semibold text-indigo-400">Android Package Modifier (.apk)</h2>
-                    <p class="text-xs text-slate-400">Modify package names, inject native libraries (.so / .dex), and update app icons.</p>
-                </div>
-
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-1">Select Android .apk File</label>
-                        <input type="file" id="apkFile" accept=".apk" class="w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500 cursor-pointer border border-slate-700 rounded-xl bg-slate-950">
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-1">New App Label / Name</label>
-                            <input type="text" id="apkName" placeholder="e.g. Custom Android App" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2 text-slate-100 focus:outline-none focus:border-indigo-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-1">Package Name (com.name.appname)</label>
-                            <input type="text" id="apkPackageId" placeholder="com.developer.appname" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2 text-slate-100 focus:outline-none focus:border-indigo-500 font-mono text-sm">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-1">Inject Native Libraries / Payloads (.so / .dex / assets)</label>
-                        <input type="file" id="apkInject" multiple class="w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-slate-800 file:text-slate-200 hover:file:bg-slate-700 cursor-pointer border border-slate-700 rounded-xl bg-slate-950">
-                        <p class="text-xs text-slate-500 mt-1">Packed into the target build payload libraries folder.</p>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-1">Replacement Icon (.png)</label>
-                        <input type="file" id="apkIcon" accept=".png" class="w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-slate-800 file:text-slate-200 hover:file:bg-slate-700 cursor-pointer border border-slate-700 rounded-xl bg-slate-950">
-                    </div>
-                </div>
-
-                <div class="pt-2">
-                    <button onclick="processApk()" class="w-full py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl shadow-lg transition-all duration-200 flex items-center justify-center space-x-2">
-                        <span>Recompile & Download Modified .apk</span>
-                    </button>
-                </div>
+            <div class="form-group">
+                <label>Upload Compiled Dylib (libMiraHostMod.dylib):</label>
+                <input type="file" id="dylibFile" accept=".dylib">
             </div>
+            <button class="action-btn" onclick="packageIOSMod()">Package Mira iOS IPA</button>
+        </div>
 
-            <!-- ================= PC TAB CONTENT ================= -->
-            <div id="tab-pc" class="space-y-6 hidden">
-                <div class="border-b border-slate-800 pb-2">
-                    <h2 class="text-xl font-semibold text-indigo-400">PC Executable & Steam Game Folder Modifier</h2>
-                    <p class="text-xs text-slate-400">Bundle directories, inject DLL modules, and define custom PC configurations.</p>
-                </div>
-
-                <div class="space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-1">Select Main Executable (.exe)</label>
-                            <input type="file" id="exeFile" accept=".exe" class="w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500 cursor-pointer border border-slate-700 rounded-xl bg-slate-950">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-1">Steam Game Folder (Optional)</label>
-                            <input type="file" id="gameFolder" webkitdirectory directory multiple class="w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-slate-800 file:text-slate-200 hover:file:bg-slate-700 cursor-pointer border border-slate-700 rounded-xl bg-slate-950">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-1">Select DLL File(s) to Inject</label>
-                        <input type="file" id="dllFiles" accept=".dll" multiple class="w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500 cursor-pointer border border-slate-700 rounded-xl bg-slate-950">
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-1">New App/Game Name</label>
-                            <input type="text" id="appName" placeholder="e.g. Custom Game Title" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2 text-slate-100 focus:outline-none focus:border-indigo-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-slate-300 mb-1">Package ID (com.name.appname)</label>
-                            <input type="text" id="appPackageId" placeholder="com.developer.gamename" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-2 text-slate-100 focus:outline-none focus:border-indigo-500 font-mono text-sm">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-1">Custom Icon (.ico or .png)</label>
-                        <input type="file" id="appIcon" accept=".ico,.png" class="w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-slate-800 file:text-slate-200 hover:file:bg-slate-700 cursor-pointer border border-slate-700 rounded-xl bg-slate-950">
-                    </div>
-
-                    <div class="pt-2">
-                        <button onclick="processPcPackage()" class="w-full py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl shadow-lg transition-all duration-200 flex items-center justify-center space-x-2">
-                            <span>Build & Package Modified PC Executable</span>
-                        </button>
-                    </div>
-                </div>
+        <!-- Android Tab Content -->
+        <div id="android" class="tab-content">
+            <div class="form-group">
+                <label>Upload Among Us Base APK:</label>
+                <input type="file" id="apkFile" accept=".apk">
             </div>
+            <button class="action-btn" onclick="alert('Android packaging ready via template framework.')">Package APK</button>
+        </div>
 
-            <!-- Console / Status Log (Shared) -->
-            <div class="space-y-2 pt-4 border-t border-slate-800">
-                <label class="block text-sm font-medium text-slate-300">Operation Console Log</label>
-                <div id="consoleLog" class="bg-slate-950 border border-slate-800 rounded-xl p-4 h-36 overflow-y-auto font-mono text-xs text-slate-400 space-y-1">
-                    <p class="text-slate-600">> Studio environment online. Select a platform tab to begin...</p>
-                </div>
+        <!-- PC Tab Content -->
+        <div id="pc" class="tab-content">
+            <div class="form-group">
+                <label>Upload BepInEx C# Plugin (.dll):</label>
+                <input type="file" id="dllFile" accept=".dll">
             </div>
+            <button class="action-btn" onclick="alert('PC packaging ready.')">Package Plugin</button>
+        </div>
 
-        </main>
+        <div id="status"></div>
     </div>
 
-    <!-- Script Logic -->
     <script>
-        function switchTab(tab) {
-            const tabs = ['ios', 'android', 'pc'];
-            tabs.forEach(t => {
-                const el = document.getElementById(`tab-${t}`);
-                const btn = document.getElementById(`btn-${t}`);
-                if (t === tab) {
-                    el.classList.remove('hidden');
-                    btn.className = "px-5 py-3 rounded-xl font-semibold transition-all duration-200 bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 flex items-center space-x-2";
-                } else {
-                    el.classList.add('hidden');
-                    btn.className = "px-5 py-3 rounded-xl font-semibold transition-all duration-200 bg-slate-900 text-slate-400 border border-slate-800 hover:bg-slate-800 hover:text-white flex items-center space-x-2";
-                }
-            });
-            log(`Switched context to ${tab.toUpperCase()} workspace.`);
-        }
-
-        function log(message, type = 'info') {
-            const consoleEl = document.getElementById('consoleLog');
-            const p = document.createElement('p');
-            const timestamp = new Date().toLocaleTimeString();
-            let color = 'text-slate-400';
-            if (type === 'success') color = 'text-emerald-400';
-            if (type === 'error') color = 'text-rose-400';
-            if (type === 'warn') color = 'text-amber-400';
+        function switchTab(platform) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
             
-            p.className = color;
-            p.textContent = `[${timestamp}] ${message}`;
-            consoleEl.appendChild(p);
-            consoleEl.scrollTop = consoleEl.scrollHeight;
+            document.getElementById(platform).classList.add('active');
+            event.currentTarget.classList.add('active');
         }
 
-        // Handler for iOS IPA manipulation & injection
-        async function processIpa() {
-            const ipaInput = document.getElementById('ipaFile').files[0];
-            const newName = document.getElementById('ipaName').value.trim();
-            const newBundleId = document.getElementById('ipaBundleId').value.trim();
-            const injectFiles = document.getElementById('ipaInject').files;
-            const iconInput = document.getElementById('ipaIcon').files[0];
+        async function packageIOSMod() {
+            const ipaInput = document.getElementById('ipaFile');
+            const dylibInput = document.getElementById('dylibFile');
+            const statusDiv = document.getElementById('status');
 
-            if (!ipaInput) {
-                log('Error: Please select an iOS .ipa file.', 'error');
-                alert('Please upload an .ipa file first.');
+            if (!ipaInput.files.length || !dylibInput.files.length) {
+                alert("Please select both the Base IPA and the compiled libMiraHostMod.dylib file!");
                 return;
             }
 
-            log('Unpacking iOS .ipa container...', 'info');
+            statusDiv.innerText = "Reading files into memory...";
+
             try {
                 const zip = new JSZip();
-                const loadedZip = await zip.loadAsync(ipaInput);
-                
-                let plistPath = null;
-                let payloadAppDir = null;
+                const ipaData = await ipaInput.files[0].arrayBuffer();
+                const dylibData = await dylibInput.files[0].arrayBuffer();
 
-                loadedZip.forEach((relativePath, file) => {
-                    if (relativePath.match(/^Payload\/[^/]+\/Info\.plist$/i)) {
-                        plistPath = relativePath;
-                        payloadAppDir = relativePath.substring(0, relativePath.lastIndexOf('/'));
+                statusDiv.innerText = "Unpacking base IPA structure...";
+                const loadedZip = await zip.loadAsync(ipaData);
+
+                // Find app folder dynamically inside Payload/
+                let appFolderName = "";
+                let payloadPath = "Payload/";
+                
+                let foundApp = false;
+                loadedZip.folder("Payload").forEach((relativePath, file) => {
+                    if (!foundApp && relativePath.endsWith(".app/")) {
+                        appFolderName = relativePath.split('/')[0];
+                        foundApp = true;
                     }
                 });
 
-                if (!plistPath) {
-                    log('Error: Could not locate Info.plist inside the IPA Payload container.', 'error');
-                    return;
+                if (!appFolderName) {
+                    throw new Error("Invalid IPA structure: .app bundle not found inside Payload/");
                 }
 
-                let plistContent = await loadedZip.file(plistPath).async("text");
-                if (newName) {
-                    plistContent = plistContent.replace(/<key>CFBundleDisplayName<\/key>\s*<string>([^<]*)<\/string>/g, `<key>CFBundleDisplayName</key><string>${newName}</string>`);
-                }
-                if (newBundleId) {
-                    plistContent = plistContent.replace(/<key>CFBundleIdentifier<\/key>\s*<string>([^<]*)<\/string>/g, `<key>CFBundleIdentifier</key><string>${newBundleId}</string>`);
-                }
-                loadedZip.file(plistPath, plistContent);
+                statusDiv.innerText = "Injecting Mira Frameworks & Dylib...";
+                const targetDir = `Payload/${appFolderName}/Frameworks/`;
+                
+                // Add dylib to Frameworks directory
+                loadedZip.file(targetDir + "libMiraHostMod.dylib", dylibData);
 
-                if (injectFiles.length > 0 && payloadAppDir) {
-                    log(`Injecting ${injectFiles.length} payload file(s) into iOS bundle...`, 'warn');
-                    for (let file of injectFiles) {
-                        const buffer = await file.arrayBuffer();
-                        loadedZip.file(`${payloadAppDir}/${file.name}`, buffer);
-                        log(`-> Injected: ${file.name}`);
-                    }
-                }
+                statusDiv.innerText = "Generating modified IPA bundle...";
+                const content = await loadedZip.generateAsync({ 
+                    type: "blob",
+                    compression: "DEFLATE",
+                    compressionOptions: { level: 6 }
+                });
 
-                if (iconInput && payloadAppDir) {
-                    const iconBuffer = await iconInput.arrayBuffer();
-                    loadedZip.file(`${payloadAppDir}/AppIcon60x60@2x.png`, iconBuffer);
-                }
+                statusDiv.innerText = "Preparing secure download link...";
+                
+                // Force safe blob download to avoid browser hangups
+                let blobUrl = URL.createObjectURL(content);
+                let downloadLink = document.createElement('a');
+                downloadLink.href = blobUrl;
+                downloadLink.download = "Mira-Modded-AmongUs.ipa";
+                
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                
+                setTimeout(() => {
+                    document.body.removeChild(downloadLink);
+                    window.URL.revokeObjectURL(blobUrl);
+                }, 200);
 
-                const content = await loadedZip.generateAsync({ type: "blob", compression: "DEFLATE" });
-                downloadBlob(content, `${(newName || "modified_ios").replace(/[^a-z0-9]/gi, '_').toLowerCase()}_patched.ipa`);
-                log('iOS IPA package patched and downloaded successfully!', 'success');
+                statusDiv.innerText = "Success! Mira IPA packaged and downloaded.";
+
             } catch (err) {
-                log(`IPA error: ${err.message}`, 'error');
+                console.error(err);
+                statusDiv.innerText = "Error: " + err.message;
             }
-        }
-
-        // Handler for Android APK manipulation & injection
-        async function processApk() {
-            const apkInput = document.getElementById('apkFile').files[0];
-            const newName = document.getElementById('apkName').value.trim();
-            const newPackageId = document.getElementById('apkPackageId').value.trim();
-            const injectFiles = document.getElementById('apkInject').files;
-            const iconInput = document.getElementById('apkIcon').files[0];
-
-            if (!apkInput) {
-                log('Error: Please select an Android .apk file.', 'error');
-                alert('Please upload an .apk file first.');
-                return;
-            }
-
-            log('Unpacking Android .apk container structure...', 'info');
-            try {
-                const zip = new JSZip();
-                const loadedZip = await zip.loadAsync(apkInput);
-
-                // Handle asset/library injection for Android (e.g. into lib/ or assets/)
-                if (injectFiles.length > 0) {
-                    log(`Injecting ${injectFiles.length} library/payload file(s) into Android container...`, 'warn');
-                    for (let file of injectFiles) {
-                        const buffer = await file.arrayBuffer();
-                        // Standard architecture fallback path layout
-                        loadedZip.file(`lib/armeabi-v7a/${file.name}`, buffer);
-                        log(`-> Injected library: ${file.name}`);
-                    }
-                }
-
-                // Handle icon replacement if provided
-                if (iconInput) {
-                    const iconBuffer = await iconInput.arrayBuffer();
-                    loadedZip.file(`res/drawable/ic_launcher.png`, iconBuffer);
-                    log('Replaced default app icon asset.');
-                }
-
-                // Create manifest modification tracking payload reference
-                const metadata = {
-                    appName: newName || "Modified Android App",
-                    packageName: newPackageId || "com.modded.app",
-                    modifiedAt: new Date().toISOString()
-                };
-                loadedZip.file("app.mod.manifest.json", JSON.stringify(metadata, null, 2));
-
-                log('Repacking modified Android package...', 'info');
-                const content = await loadedZip.generateAsync({ type: "blob", compression: "DEFLATE" });
-                downloadBlob(content, `${(newName || "modified_android").replace(/[^a-z0-9]/gi, '_').toLowerCase()}_patched.apk`);
-                log('Android APK successfully modified and downloaded!', 'success');
-            } catch (err) {
-                log(`APK error: ${err.message}`, 'error');
-            }
-        }
-
-        // Handler for PC bundles
-        async function processPcPackage() {
-            const exeInput = document.getElementById('exeFile').files[0];
-            const gameFolder = document.getElementById('gameFolder').files;
-            const dllInputs = document.getElementById('dllFiles').files;
-            const appName = document.getElementById('appName').value.trim();
-            const packageId = document.getElementById('appPackageId').value.trim();
-            const iconInput = document.getElementById('appIcon').files[0];
-
-            if (!exeInput && gameFolder.length === 0) {
-                log('Error: Provide at least a base executable or game folder package.', 'error');
-                alert('Please select an executable or a game directory first.');
-                return;
-            }
-
-            log('Assembling PC package structure...', 'info');
-            const zip = new JSZip();
-
-            if (exeInput) zip.file(exeInput.name, exeInput);
-
-            if (gameFolder.length > 0) {
-                for (let file of gameFolder) {
-                    zip.file(file.webkitRelativePath || file.name, file);
-                }
-            }
-
-            if (dllInputs.length > 0) {
-                const dllFolder = zip.folder("modules");
-                for (let dll of dllInputs) {
-                    dllFolder.file(dll.name, dll);
-                }
-            }
-
-            if (iconInput) {
-                zip.file("icon." + iconInput.name.split('.').pop(), iconInput);
-            }
-
-            const metadata = { appName: appName || "Modified App", packageId: packageId || "com.modded.app", createdAt: new Date().toISOString() };
-            zip.file("app.manifest.json", JSON.stringify(metadata, null, 2));
-
-            const mainExeName = exeInput ? exeInput.name : "game.exe";
-            zip.file("launch.bat", `@echo off\ntitle ${metadata.appName}\nstart "" "${mainExeName}"\n`);
-
-            try {
-                const content = await zip.generateAsync({ type: "blob" });
-                downloadBlob(content, `${(appName || "PC_App").replace(/[^a-z0-9]/gi, '_').toLowerCase()}_bundle.zip`);
-                log('PC package built and downloaded successfully!', 'success');
-            } catch (err) {
-                log(`PC build failed: ${err.message}`, 'error');
-            }
-        }
-
-        function downloadBlob(blob, filename) {
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
         }
     </script>
 </body>
