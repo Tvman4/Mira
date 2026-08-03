@@ -300,25 +300,21 @@
                 const zip = new JSZip();
                 const loadedZip = await zip.loadAsync(apkInput);
 
-                // Handle asset/library injection for Android (e.g. into lib/ or assets/)
                 if (injectFiles.length > 0) {
                     log(`Injecting ${injectFiles.length} library/payload file(s) into Android container...`, 'warn');
                     for (let file of injectFiles) {
                         const buffer = await file.arrayBuffer();
-                        // Standard architecture fallback path layout
                         loadedZip.file(`lib/armeabi-v7a/${file.name}`, buffer);
                         log(`-> Injected library: ${file.name}`);
                     }
                 }
 
-                // Handle icon replacement if provided
                 if (iconInput) {
                     const iconBuffer = await iconInput.arrayBuffer();
                     loadedZip.file(`res/drawable/ic_launcher.png`, iconBuffer);
                     log('Replaced default app icon asset.');
                 }
 
-                // Create manifest modification tracking payload reference
                 const metadata = {
                     appName: newName || "Modified Android App",
                     packageName: newPackageId || "com.modded.app",
@@ -388,14 +384,21 @@
         }
 
         function downloadBlob(blob, filename) {
-            const url = URL.createObjectURL(blob);
+            const safeBlob = new Blob([blob], { type: 'application/octet-stream' });
+            const url = URL.createObjectURL(safeBlob);
+            
             const a = document.createElement('a');
+            a.style.display = 'none';
             a.href = url;
             a.download = filename;
+            
             document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+            
+            setTimeout(() => {
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            }, 100);
         }
     </script>
 </body>
