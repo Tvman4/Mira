@@ -237,15 +237,16 @@
                 let plistPath = null;
                 let payloadAppDir = null;
 
+                // Flexible search for Info.plist anywhere in the archive
                 loadedZip.forEach((relativePath, file) => {
-                    if (relativePath.match(/^Payload\/[^/]+\/Info\.plist$/i)) {
+                    if (relativePath.toLowerCase().endsWith('info.plist') && !plistPath) {
                         plistPath = relativePath;
                         payloadAppDir = relativePath.substring(0, relativePath.lastIndexOf('/'));
                     }
                 });
 
-                if (!plistPath) {
-                    log('Error: Could not locate Info.plist inside the IPA Payload container.', 'error');
+                if (!plistPath || !payloadAppDir) {
+                    log('Error: Could not locate Info.plist inside the IPA container.', 'error');
                     return;
                 }
 
